@@ -1,16 +1,59 @@
 pragma circom 2.0.0;
 
-/*This circuit template checks that c is the multiplication of a and b.*/  
+template AND() {
+    signal input a;
+    signal input b;
+    signal output out;
 
-template Multiplier2 () {  
-
-   // Declaration of signals.  
-   signal input a;  
-   signal input b;  
-   signal output c;  
-
-   // Constraints.  
-   c <== a * b;  
+    out <== a*b;
 }
 
-component main = Multiplier2();
+template OR() {
+    signal input a;
+    signal input b;
+    signal output out;
+
+    out <== a + b - a*b;
+}
+
+template NOT() {
+    signal input in;
+    signal output out;
+
+    out <== 1 + in - 2*in;
+}
+
+template multiplier (){  
+   // input signal
+      signal input a;
+      signal input b;
+
+   // Intermediate signal
+      signal x;
+      signal y;
+   
+   // output signal
+   signal output q;
+
+   // creating instances of gates
+   component and= AND();
+   component not = NOT();
+   component or  = OR();
+
+   // generating x
+   and.a <== a;
+   and.b <== b;
+   x<== and.out;
+
+   // generating y;
+   not.in <== b;
+   y<== not.out;
+
+   // generating q
+   or.a <== x;
+   or.b<== y;
+
+   q<== or.out;
+}
+
+component main = multiplier();

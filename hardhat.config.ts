@@ -4,7 +4,7 @@ import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-circom";
 // circuits
 import circuits = require('./circuits.config.json')
-
+require('dotenv').config();
 // set env var to the root of the project
 process.env.BASE_PATH = __dirname;
 
@@ -30,6 +30,14 @@ const config: HardhatUserConfig = {
     // (required) Each object in this array refers to a separate circuit
     circuits: JSON.parse(JSON.stringify(circuits))
   },
+  
+  networks:{
+      fuji: {
+      url: "https://api.avax-test.network/ext/bc/C/rpc",
+      chainId: 43113,
+      accounts: [process.env.WALLET_PRIVATE_KEY], // we use a .env file to hide our wallets private key
+    },
+ }
 };
 
 export default config;
